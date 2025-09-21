@@ -12,20 +12,35 @@ on:
 
 jobs:
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-    
+    # SECURITY: Only review PRs from wscoble or when wscoble triggers the workflow
+    # This prevents unauthorized users from consuming Claude API tokens
+    if: |
+      github.event.pull_request.user.login == 'wscoble' ||
+      github.actor == 'wscoble'
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write  # Need write to comment on PRs
       issues: read
       id-token: write
-    
+
     steps:
+      # Extra security check
+      - name: Verify authorized workflow
+        run: |
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          ACTOR="${{ github.actor }}"
+
+          if [ "$PR_AUTHOR" != "wscoble" ] && [ "$ACTOR" != "wscoble" ]; then
+            echo "❌ Unauthorized review attempt"
+            echo "PR Author: $PR_AUTHOR"
+            echo "Workflow Actor: $ACTOR"
+            echo "Only wscoble can trigger Claude reviews."
+            exit 1
+          fi
+          echo "✅ Authorized review for PR by $PR_AUTHOR"
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
