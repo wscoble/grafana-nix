@@ -195,7 +195,7 @@
                 # Observability stack for testing
                 grafana
                 prometheus
-                loki
+                grafana-loki # Use the proper package name
                 grafana-alloy
                 tempo
 
@@ -204,6 +204,7 @@
                 jq # JSON processor
                 yq-go # YAML processor
                 httpie # User-friendly HTTP client
+                act # Local GitHub Actions runner
 
                 # Container tools
                 docker

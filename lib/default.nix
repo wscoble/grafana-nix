@@ -5,7 +5,8 @@ rec {
   generators = import ./generators.nix { inherit lib pkgs; };
 
   # Docker utilities (Linux only)
-  docker = if pkgs.stdenv.isLinux
+  docker =
+    if pkgs.stdenv.isLinux
     then import ./docker.nix { inherit lib pkgs; }
     else {
       buildImage = args: throw "Docker images are only supported on Linux platforms";
@@ -15,7 +16,8 @@ rec {
     };
 
   # Kubernetes utilities (Linux only)
-  kubernetes = if pkgs.stdenv.isLinux
+  kubernetes =
+    if pkgs.stdenv.isLinux
     then import ./kubernetes.nix { inherit lib pkgs; }
     else {
       buildManifests = args: throw "Kubernetes manifests are only supported on Linux platforms";
