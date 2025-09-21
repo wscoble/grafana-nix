@@ -1,0 +1,91 @@
+# Complete Grafana Observability Stack for Development
+#
+# This manifest adds a complete observability stack to your development environment
+# including Grafana, Prometheus, Loki, Tempo, and Alloy for comprehensive monitoring.
+#
+# Usage: flox init -m manifest.toml
+
+version = 1
+
+[install]
+# Install the complete observability stack
+grafana-nix.flake = "github:wscoble/grafana-nix"
+
+# Optional: Individual tools for development
+jq.pkg-path = "jq"
+curl.pkg-path = "curl"
+
+[services]
+# Main observability stack service
+[services.observability]
+command = "grafana-stack"
+description = "Complete Grafana observability stack"
+
+# Environment configuration optimized for development
+[services.observability.vars]
+GRAFANA_ADMIN_PASSWORD = "dev"
+PROMETHEUS_RETENTION = "7d"        # Short retention for development
+LOKI_RETENTION = "168h"            # 7 days
+TEMPO_RETENTION = "72h"            # 3 days
+ALLOY_SCRAPE_INTERVAL = "15s"      # Frequent scraping for development
+
+# Service configuration
+is-daemon = true
+shutdown.command = "pkill -f grafana-stack"
+
+# Optional: Individual services for granular control
+[services.grafana]
+command = "grafana-server"
+description = "Grafana visualization server"
+is-daemon = true
+shutdown.command = "pkill -f grafana-server"
+
+[services.prometheus]
+command = "prometheus"
+description = "Prometheus metrics collection"
+is-daemon = true
+shutdown.command = "pkill -f prometheus"
+
+# Global environment variables for easy access
+[vars]
+# Service URLs for easy reference
+GRAFANA_URL = "http://localhost:3000"
+PROMETHEUS_URL = "http://localhost:9090"
+LOKI_URL = "http://localhost:3100"
+TEMPO_URL = "http://localhost:3200"
+ALLOY_URL = "http://localhost:12345"
+
+# Data directory configuration
+OBSERVABILITY_DATA_DIR = "$FLOX_ENV_PROJECT_DIR/data"
+
+# Hooks for better developer experience
+[hook]
+on-activate = '''
+  echo "🚀 Grafana Observability Stack - Development Environment"
+  echo "======================================================"
+  echo ""
+  echo "📊 Complete observability stack now available!"
+  echo ""
+  echo "🎯 Quick Start:"
+  echo "  flox services start observability  # Start complete stack"
+  echo "  flox services status               # Check service status"
+  echo "  flox services logs observability   # View service logs"
+  echo ""
+  echo "🌐 Access Points:"
+  echo "  Grafana:    $GRAFANA_URL (admin/dev)"
+  echo "  Prometheus: $PROMETHEUS_URL"
+  echo "  Loki:       $LOKI_URL"
+  echo "  Tempo:      $TEMPO_URL"
+  echo "  Alloy:      $ALLOY_URL"
+  echo ""
+  echo "📁 Data stored in: $OBSERVABILITY_DATA_DIR"
+  echo ""
+  echo "💡 Tip: All services will automatically discover each other!"
+  echo "🚀 Happy monitoring!"
+'''
+
+on-deactivate = '''
+  echo "👋 Stopping observability services..."
+  flox services stop observability 2>/dev/null || true
+  echo "✅ Observability stack stopped"
+'''

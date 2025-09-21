@@ -1,0 +1,51 @@
+# Development environment with observability stack
+# Usage: flox init -m manifest.toml
+
+[install]
+# Add observability to your development environment
+grafana-nix.flake = "github:wscoble/grafana-nix"
+
+# Essential development tools
+curl = "latest"
+jq = "latest"
+
+[services.observability]
+# Complete observability stack for development
+command = "grafana-stack"
+vars.GRAFANA_DATA_DIR = "$FLOX_ENV_PROJECT_DIR/data"
+vars.GRAFANA_ADMIN_PASSWORD = "dev"
+vars.PROMETHEUS_RETENTION = "7d"  # Short retention for dev work
+vars.LOKI_RETENTION = "168h"      # 7 days for logs
+is-daemon = true
+shutdown.command = "pkill -f grafana-stack"
+
+[vars]
+# Global environment variables
+GRAFANA_URL = "http://localhost:3000"
+PROMETHEUS_URL = "http://localhost:9090"
+LOKI_URL = "http://localhost:3100"
+TEMPO_URL = "http://localhost:3200"
+
+# Data directory (shared across services)
+OBSERVABILITY_DATA_DIR = "$FLOX_ENV_PROJECT_DIR/data"
+
+[hook]
+on-activate = '''
+  echo "🚀 Development Environment with Observability!"
+  echo "=============================================="
+  echo ""
+  echo "💡 Quick start:"
+  echo "  flox services start observability"
+  echo "  # Develop your app with full observability"
+  echo ""
+  echo "🔗 Access your metrics and logs:"
+  echo "  Grafana:    $GRAFANA_URL (admin/dev)"
+  echo "  Prometheus: $PROMETHEUS_URL"
+  echo "  Loki:       $LOKI_URL"
+  echo "  Tempo:      $TEMPO_URL"
+  echo ""
+  echo "📁 Data: $OBSERVABILITY_DATA_DIR"
+
+  # Create data directory
+  mkdir -p "$OBSERVABILITY_DATA_DIR"/{grafana,prometheus,loki,tempo}
+'''

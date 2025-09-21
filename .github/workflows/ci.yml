@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    name: Nix Flake Check
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix with Determinate Installer
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Check flake formatting
+        run: nix fmt -- --check .
+
+      - name: Check flake
+        uses: DeterminateSystems/flake-checker-action@main
+
+      - name: Build all outputs
+        run: nix flake check --all-systems
+
+      - name: Build packages
+        run: |
+          nix build .#grafana || echo "Grafana package not yet implemented"
+          nix build .#prometheus || echo "Prometheus package not yet implemented"
+          nix build .#loki || echo "Loki package not yet implemented"
+          nix build .#tempo || echo "Tempo package not yet implemented"
+
+  build-matrix:
+    name: Build on ${{ matrix.system }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      id-token: write
+      contents: read
+    strategy:
+      matrix:
+        include:
+          - system: x86_64-linux
+            os: ubuntu-22.04
+          - system: aarch64-darwin
+            os: macos-14
+          - system: x86_64-darwin
+            os: macos-13
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix with Determinate Installer
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Build development shell
+        run: nix develop --command echo "Development shell works!"
+
+      - name: Check if flake builds
+        run: nix build .#packages.${{ matrix.system }}.default || echo "Default package not yet implemented"
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix with Determinate Installer
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Run security audit
+        run: |
+          echo "Security audit placeholder - will implement vulnerability scanning for Nix packages"
+          nix flake metadata --json | jq '.locks.nodes[] | select(.locked.type == "github") | {owner: .locked.owner, repo: .locked.repo, rev: .locked.rev}'

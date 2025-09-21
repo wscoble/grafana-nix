@@ -1,0 +1,72 @@
+name: Publish rolling release to FlakeHub
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  flakehub-publish-rolling:
+    name: Publish rolling release to FlakeHub
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write # Required for authenticating against FlakeHub
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix with Determinate Installer
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Validate flake before publishing
+        run: |
+          nix flake check
+          echo "✅ Flake validation passed for rolling release"
+
+      - name: Publish rolling release to FlakeHub
+        uses: DeterminateSystems/flakehub-push@main
+        with:
+          visibility: public
+          rolling: true
+          rolling-minor: 1
+
+      - name: Comment on commit (if triggered by push)
+        if: github.event_name == 'push'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commit_sha = context.sha;
+            const commit_url = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${commit_sha}`;
+            const flakehub_url = `https://flakehub.com/flake/${context.repo.owner}/${context.repo.repo}`;
+
+            const body = `🚀 **Rolling release published to FlakeHub!**
+
+            This commit has been automatically published as a rolling release.
+
+            **Try it now:**
+            \`\`\`bash
+            nix run "${flakehub_url}"
+            \`\`\`
+
+            **Add to your flake.nix:**
+            \`\`\`nix
+            {
+              inputs = {
+                grafana-nix.url = "${flakehub_url}";
+              };
+            }
+            \`\`\`
+
+            📦 [View on FlakeHub](${flakehub_url})`;
+
+            github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: commit_sha,
+              body: body
+            });

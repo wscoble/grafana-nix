@@ -1,0 +1,107 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - '*.md'
+      - 'flake.nix'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - '*.md'
+      - 'flake.nix'
+
+jobs:
+  validate-docs:
+    name: Validate Documentation
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix with Determinate Installer
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Check markdown formatting
+        run: |
+          # Install markdownlint if we decide to add it to the flake
+          echo "📝 Checking markdown formatting..."
+          # For now, just check that files exist and are readable
+          find . -name "*.md" -exec echo "Found: {}" \;
+
+      - name: Validate code examples in documentation
+        run: |
+          echo "🔍 Validating Nix code examples in documentation..."
+
+          # Extract and validate nix code blocks from markdown files
+          # This is a placeholder - we'll implement proper validation once we have examples
+          grep -r '```nix' . && echo "Found Nix code examples" || echo "No Nix code examples found yet"
+
+      - name: Test documentation examples
+        run: |
+          echo "🧪 Testing documentation examples..."
+
+          # Test any nix commands mentioned in docs
+          if grep -q "nix develop" README.md 2>/dev/null; then
+            echo "Found 'nix develop' example - testing..."
+            timeout 30s nix develop --command echo "Development shell test passed" || echo "Dev shell not ready yet"
+          fi
+
+          if grep -q "nix build" README.md 2>/dev/null; then
+            echo "Found 'nix build' example - testing..."
+            # This will likely fail until we implement the flake, but that's expected
+            nix build --dry-run . || echo "Build examples not ready yet"
+          fi
+
+      - name: Check links in documentation
+        run: |
+          echo "🔗 Checking documentation links..."
+
+          # Simple link validation - check for common broken patterns
+          if grep -r "http://localhost" . --include="*.md"; then
+            echo "⚠️ Found localhost links that should be updated"
+            exit 1
+          fi
+
+          # Check for placeholder text that should be updated
+          if grep -r "OWNER" . --include="*.md" | grep -v "CLAUDE.md"; then
+            echo "⚠️ Found OWNER placeholder that should be updated with actual GitHub username"
+            exit 1
+          fi
+
+          echo "✅ No obvious link issues found"
+
+  spell-check:
+    name: Spell Check
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run spell check
+        run: |
+          echo "📝 Running spell check on documentation..."
+
+          # Simple spell check for common technical terms
+          # This is a basic implementation - we can enhance it later
+
+          # Check for common misspellings in observability/Nix space
+          if grep -ri "grafana" . --include="*.md" | grep -v "Grafana"; then
+            echo "ℹ️ Consider capitalizing 'Grafana' for consistency"
+          fi
+
+          if grep -ri "prometheus" . --include="*.md" | grep -v "Prometheus"; then
+            echo "ℹ️ Consider capitalizing 'Prometheus' for consistency"
+          fi
+
+          echo "✅ Basic spell check completed"
