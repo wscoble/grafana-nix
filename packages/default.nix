@@ -18,20 +18,16 @@ rec {
   tempo-configured = (grafanaLib.buildStack { }).tempo;
   alloy-configured = (grafanaLib.buildStack { }).alloy;
 
-} // lib.optionalAttrs pkgs.stdenv.isLinux (let
-  stack = grafanaLib.buildStack { };
-in {
-  # Docker images (Linux only)
-  grafana-image = stack.grafana-image or null;
-  prometheus-image = stack.prometheus-image or null;
-  loki-image = stack.loki-image or null;
-  tempo-image = stack.tempo-image or null;
-  alloy-image = stack.alloy-image or null;
+  # Docker images (fail gracefully on non-Linux)
+  grafana-image = (grafanaLib.buildStack { }).grafana-image;
+  prometheus-image = (grafanaLib.buildStack { }).prometheus-image;
+  loki-image = (grafanaLib.buildStack { }).loki-image;
+  tempo-image = (grafanaLib.buildStack { }).tempo-image;
+  alloy-image = (grafanaLib.buildStack { }).alloy-image;
 
-  # Deployment packages (Linux only)
-  docker-compose = stack.docker-compose or null;
-  kubernetes-manifests = stack.kubernetes-manifests or null;
-}) // {
+  # Deployment packages (fail gracefully on non-Linux)
+  docker-compose = (grafanaLib.buildStack { }).docker-compose;
+  kubernetes-manifests = (grafanaLib.buildStack { }).kubernetes-manifests;
 
   # Custom stacks
   minimal-stack = (grafanaLib.buildStack {
