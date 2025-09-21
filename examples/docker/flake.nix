@@ -2,7 +2,7 @@
   description = "Docker deployment example for Grafana stack";
 
   inputs = {
-    grafana-nix.url = "https://flakehub.com/f/OWNER/grafana-nix";
+    grafana-nix.url = "https://flakehub.com/f/wscoble/grafana-nix";
     nixpkgs.follows = "grafana-nix/nixpkgs";
   };
 

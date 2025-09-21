@@ -167,13 +167,13 @@ rec {
 
         storage_config = {
           boltdb_shipper = {
-            active_index_directory = "/tmp/loki/boltdb-shipper-active";
-            cache_location = "/tmp/loki/boltdb-shipper-cache";
+            active_index_directory = "./loki/boltdb-shipper-active";
+            cache_location = "./loki/boltdb-shipper-cache";
             shared_store = "filesystem";
           };
 
           filesystem = {
-            directory = "/tmp/loki/chunks";
+            directory = "./loki/chunks";
           };
         };
 
@@ -255,7 +255,7 @@ rec {
           trace = {
             backend = "local";
             local = {
-              path = "/tmp/tempo/traces";
+              path = "./tempo/traces";
             };
           };
         };
@@ -279,21 +279,9 @@ rec {
     }@args:
     let
       config = ''
-        // Prometheus metrics collection
-        prometheus.scrape "local_metrics" {
-          targets = [
-            {"__address__" = "localhost:${toString port}"},
-          ]
-          scrape_interval = "${scrapeInterval}"
-          forward_to = [prometheus.remote_write.default.receiver]
-        }
-
-        // Remote write metrics to Prometheus
-        prometheus.remote_write "default" {
-          endpoint {
-            url = "${prometheusUrl}/api/v1/write"
-          }
-        }
+        // Alloy automatically exposes metrics on its HTTP server
+        // Prometheus scrapes these at /metrics endpoint
+        // No additional configuration needed for self-monitoring
 
         // Local file discovery for logs
         local.file_match "application_logs" {
@@ -333,7 +321,7 @@ rec {
         // Export traces to Tempo
         otelcol.exporter.otlp "default" {
           client {
-            endpoint = "${tempoUrl}"
+            endpoint = "http://localhost:4317"
             tls {
               insecure = true
             }

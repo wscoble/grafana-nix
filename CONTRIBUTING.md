@@ -16,7 +16,7 @@ Our mission is to:
 
 ```bash
 # Clone the repository
-git clone https://github.com/OWNER/grafana-nix
+git clone https://github.com/wscoble/grafana-nix
 cd grafana-nix
 
 # Enter development shell (installs all tools)
@@ -329,7 +329,7 @@ Need help getting started?
 
 1. **Read the docs**: Start with [docs/getting-started/](./docs/getting-started/)
 2. **Search issues**: Your question might already be answered
-3. **Ask in discussions**: [GitHub Discussions](https://github.com/OWNER/grafana-nix/discussions)
+3. **Ask in discussions**: [GitHub Discussions](https://github.com/wscoble/grafana-nix/discussions)
 4. **Join Discord**: [Nix Community](https://discord.gg/RbvHtGa)
 
 ---
