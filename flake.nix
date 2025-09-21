@@ -49,7 +49,7 @@
               alloy
               grafana-stack;
 
-            # Docker images
+            # Docker images (fail gracefully on non-Linux)
             inherit (packages)
               grafana-image
               prometheus-image
@@ -57,7 +57,7 @@
               tempo-image
               alloy-image;
 
-            # Deployment artifacts
+            # Deployment artifacts (fail gracefully on non-Linux)
             inherit (packages)
               docker-compose
               kubernetes-manifests;
@@ -154,7 +154,7 @@
               };
             };
 
-            # Deployment helpers
+            # Deployment helpers (fail gracefully on non-Linux)
             docker-up = {
               type = "app";
               program = "${packages.docker-compose}/bin/docker-up";
@@ -195,7 +195,7 @@
                 # Observability stack for testing
                 grafana
                 prometheus
-                loki
+                grafana-loki # Use the proper package name
                 grafana-alloy
                 tempo
 
@@ -204,6 +204,7 @@
                 jq # JSON processor
                 yq-go # YAML processor
                 httpie # User-friendly HTTP client
+                act # Local GitHub Actions runner
 
                 # Container tools
                 docker

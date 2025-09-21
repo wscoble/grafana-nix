@@ -69,9 +69,9 @@
             tempo = {
               build = { context = "${self.packages.${system}.tempo-image}"; };
               ports = [
-                "3200:3200"   # Tempo
-                "4317:4317"   # OTLP gRPC
-                "4318:4318"   # OTLP HTTP
+                "3200:3200" # Tempo
+                "4317:4317" # OTLP gRPC
+                "4318:4318" # OTLP HTTP
                 "14268:14268" # Jaeger HTTP
               ];
               command = [ "-config.file=/etc/tempo/tempo.yaml" ];
@@ -100,10 +100,10 @@
           };
 
           volumes = {
-            grafana-data = {};
-            prometheus-data = {};
-            loki-data = {};
-            tempo-data = {};
+            grafana-data = { };
+            prometheus-data = { };
+            loki-data = { };
+            tempo-data = { };
           };
 
           networks = {

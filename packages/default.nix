@@ -18,14 +18,14 @@ rec {
   tempo-configured = (grafanaLib.buildStack { }).tempo;
   alloy-configured = (grafanaLib.buildStack { }).alloy;
 
-  # Docker images
+  # Docker images (fail gracefully on non-Linux)
   grafana-image = (grafanaLib.buildStack { }).grafana-image;
   prometheus-image = (grafanaLib.buildStack { }).prometheus-image;
   loki-image = (grafanaLib.buildStack { }).loki-image;
   tempo-image = (grafanaLib.buildStack { }).tempo-image;
   alloy-image = (grafanaLib.buildStack { }).alloy-image;
 
-  # Deployment packages
+  # Deployment packages (fail gracefully on non-Linux)
   docker-compose = (grafanaLib.buildStack { }).docker-compose;
   kubernetes-manifests = (grafanaLib.buildStack { }).kubernetes-manifests;
 

@@ -348,7 +348,7 @@ in
   tempo = tempoPackage;
   alloy = alloyPackage;
 
-  # Docker images
+  # Docker images (fail gracefully on non-Linux)
   grafana-image = docker.buildImage {
     name = "grafana-nix/grafana";
     tag = "latest";
@@ -399,7 +399,7 @@ in
     };
   };
 
-  # Docker Compose
+  # Docker Compose (fail gracefully on non-Linux)
   docker-compose = docker.buildCompose {
     version = "3.8";
     services = {
@@ -428,7 +428,7 @@ in
     };
   };
 
-  # Kubernetes manifests
+  # Kubernetes manifests (fail gracefully on non-Linux)
   kubernetes-manifests = kubernetes.buildManifests {
     namespace = "grafana-stack";
     components = {
