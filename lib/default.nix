@@ -9,16 +9,16 @@ rec {
     if pkgs.stdenv.isLinux
     then import ./docker.nix { inherit lib pkgs; }
     else {
-      buildImage = args: pkgs.runCommand "unsupported-docker-image" {} ''
+      buildImage = args: pkgs.runCommand "unsupported-docker-image" { } ''
         echo "Docker images are only supported on Linux platforms" > $out
       '';
-      buildCompose = args: pkgs.runCommand "unsupported-docker-compose" {} ''
+      buildCompose = args: pkgs.runCommand "unsupported-docker-compose" { } ''
         echo "Docker Compose is only supported on Linux platforms" > $out
       '';
-      buildLayeredImage = args: pkgs.runCommand "unsupported-layered-image" {} ''
+      buildLayeredImage = args: pkgs.runCommand "unsupported-layered-image" { } ''
         echo "Docker layered images are only supported on Linux platforms" > $out
       '';
-      baseImage = pkgs.runCommand "unsupported-base-image" {} ''
+      baseImage = pkgs.runCommand "unsupported-base-image" { } ''
         echo "Docker base image is only supported on Linux platforms" > $out
       '';
     };
@@ -28,7 +28,7 @@ rec {
     if pkgs.stdenv.isLinux
     then import ./kubernetes.nix { inherit lib pkgs; }
     else {
-      buildManifests = args: pkgs.runCommand "unsupported-k8s-manifests" {} ''
+      buildManifests = args: pkgs.runCommand "unsupported-k8s-manifests" { } ''
         echo "Kubernetes manifests are only supported on Linux platforms" > $out
       '';
     };

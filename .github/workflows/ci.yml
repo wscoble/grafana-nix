@@ -28,7 +28,7 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Check flake formatting
-        run: nix fmt -- --check .
+        run: nix fmt --accept-flake-config -- --check .
 
       - name: Check flake
         uses: DeterminateSystems/flake-checker-action@main
