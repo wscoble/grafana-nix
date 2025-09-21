@@ -4,11 +4,22 @@ rec {
   # Configuration generators
   generators = import ./generators.nix { inherit lib pkgs; };
 
-  # Docker utilities
-  docker = import ./docker.nix { inherit lib pkgs; };
+  # Docker utilities (Linux only)
+  docker = if pkgs.stdenv.isLinux
+    then import ./docker.nix { inherit lib pkgs; }
+    else {
+      buildImage = args: throw "Docker images are only supported on Linux platforms";
+      buildCompose = args: throw "Docker Compose is only supported on Linux platforms";
+      buildLayeredImage = args: throw "Docker layered images are only supported on Linux platforms";
+      baseImage = throw "Docker base image is only supported on Linux platforms";
+    };
 
-  # Kubernetes utilities
-  kubernetes = import ./kubernetes.nix { inherit lib pkgs; };
+  # Kubernetes utilities (Linux only)
+  kubernetes = if pkgs.stdenv.isLinux
+    then import ./kubernetes.nix { inherit lib pkgs; }
+    else {
+      buildManifests = args: throw "Kubernetes manifests are only supported on Linux platforms";
+    };
 
   # Stack builder - the main API
   buildStack = args: import ./stack-builder.nix { inherit lib pkgs generators docker kubernetes; } args;

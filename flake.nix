@@ -49,7 +49,8 @@
               alloy
               grafana-stack;
 
-            # Docker images
+          } // lib.optionalAttrs pkgs.stdenv.isLinux {
+            # Docker images (Linux only)
             inherit (packages)
               grafana-image
               prometheus-image
@@ -57,10 +58,11 @@
               tempo-image
               alloy-image;
 
-            # Deployment artifacts
+            # Deployment artifacts (Linux only)
             inherit (packages)
               docker-compose
               kubernetes-manifests;
+          } // {
 
             # Pre-configured stacks for different use cases
             inherit (packages)
@@ -154,7 +156,8 @@
               };
             };
 
-            # Deployment helpers
+          } // lib.optionalAttrs pkgs.stdenv.isLinux {
+            # Deployment helpers (Linux only)
             docker-up = {
               type = "app";
               program = "${packages.docker-compose}/bin/docker-up";

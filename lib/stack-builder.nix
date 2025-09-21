@@ -348,7 +348,8 @@ in
   tempo = tempoPackage;
   alloy = alloyPackage;
 
-  # Docker images
+} // lib.optionalAttrs (docker != null) {
+  # Docker images (Linux only)
   grafana-image = docker.buildImage {
     name = "grafana-nix/grafana";
     tag = "latest";
@@ -427,8 +428,8 @@ in
       };
     };
   };
-
-  # Kubernetes manifests
+} // lib.optionalAttrs (kubernetes != null) {
+  # Kubernetes manifests (Linux only)
   kubernetes-manifests = kubernetes.buildManifests {
     namespace = "grafana-stack";
     components = {
