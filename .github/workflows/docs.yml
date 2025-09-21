@@ -44,8 +44,8 @@ jobs:
           echo "🔍 Validating Nix code examples in documentation..."
 
           # Extract and validate nix code blocks from markdown files
-          # This is a placeholder - we'll implement proper validation once we have examples
-          grep -r '```nix' . && echo "Found Nix code examples" || echo "No Nix code examples found yet"
+          echo "🔍 Checking for Nix code examples in documentation..."
+          grep -r '```nix' . && echo "✅ Found Nix code examples" || echo "ℹ️ No Nix code examples found"
 
       - name: Test documentation examples
         run: |

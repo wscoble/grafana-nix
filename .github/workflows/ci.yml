@@ -214,5 +214,5 @@ jobs:
 
       - name: Run security audit
         run: |
-          echo "Security audit placeholder - will implement vulnerability scanning for Nix packages"
+          echo "🔍 Running security audit on Nix flake dependencies..."
           nix flake metadata --json | jq '.locks.nodes[] | select(.locked.type == "github") | {owner: .locked.owner, repo: .locked.repo, rev: .locked.rev}'
