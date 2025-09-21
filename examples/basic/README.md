@@ -6,7 +6,7 @@ This example shows the simplest way to use the Grafana Nix Stack with default se
 
 ```bash
 # Clone this example
-git clone https://github.com/OWNER/grafana-nix
+git clone https://github.com/wscoble/grafana-nix
 cd grafana-nix/examples/basic
 
 # Run the stack

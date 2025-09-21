@@ -263,8 +263,8 @@ Nix builds can be slower initially (everything from source), but runtime perform
 
 ### My question isn't answered here
 
-1. **Search existing issues**: [GitHub Issues](https://github.com/OWNER/grafana-nix/issues)
-2. **Start a discussion**: [GitHub Discussions](https://github.com/OWNER/grafana-nix/discussions)
+1. **Search existing issues**: [GitHub Issues](https://github.com/wscoble/grafana-nix/issues)
+2. **Start a discussion**: [GitHub Discussions](https://github.com/wscoble/grafana-nix/discussions)
 3. **Join the community**: [Nix Community Discord](https://discord.gg/RbvHtGa)
 
 ### How can I help improve this project?
@@ -285,4 +285,4 @@ For commercial support, training, and consulting around Nix and this stack, cont
 
 ---
 
-**Still have questions?** [Open an issue](https://github.com/OWNER/grafana-nix/issues/new) and we'll add it to this FAQ!
+**Still have questions?** [Open an issue](https://github.com/wscoble/grafana-nix/issues/new) and we'll add it to this FAQ!

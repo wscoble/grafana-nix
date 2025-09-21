@@ -3,7 +3,7 @@
 
   inputs = {
     # Use the latest version from FlakeHub
-    grafana-nix.url = "https://flakehub.com/f/OWNER/grafana-nix";
+    grafana-nix.url = "https://flakehub.com/f/wscoble/grafana-nix";
     nixpkgs.follows = "grafana-nix/nixpkgs";
   };
 

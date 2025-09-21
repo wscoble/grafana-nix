@@ -4,6 +4,9 @@
 
 [![CI](https://github.com/wscoble/grafana-nix/actions/workflows/ci.yml/badge.svg)](https://github.com/wscoble/grafana-nix/actions/workflows/ci.yml)
 [![FlakeHub](https://img.shields.io/endpoint?url=https://flakehub.com/f/wscoble/grafana-nix/badge)](https://flakehub.com/flake/wscoble/grafana-nix)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Nix](https://img.shields.io/badge/Nix-flake-informational?logo=nixos&logoColor=white)](https://nixos.org/)
+[![Flox](https://img.shields.io/badge/Flox-compatible-orange)](https://flox.dev/)
 
 ## 🎯 What is this?
 
@@ -17,11 +20,14 @@ Get **instant observability** for your development projects. This Nix flake prov
 - **🔒 Reproducible**: Same stack everywhere - laptop, CI, production
 - **🎯 Nix-powered**: Configuration as code, no more YAML hell
 
-## 🚀 Quick Start (2 minutes)
+## 🚀 Quick Start
 
 ### 🦊 Using Flox (Recommended)
 
 Add observability to any project with [Flox](https://flox.dev/):
+
+> ⏱️ **First time**: ~5-10 minutes (downloads packages)
+> **Subsequent runs**: ~30 seconds (cached)
 
 ```bash
 # Add to your existing project
@@ -36,6 +42,9 @@ flox services start observability
 ### 📦 Using Nix directly
 
 If you prefer using Nix directly:
+
+> ⏱️ **First time**: ~10-15 minutes (installs Nix + downloads packages)
+> **Subsequent runs**: Instant (cached)
 
 #### 1. Install Nix (one command)
 
@@ -231,8 +240,8 @@ This project uses semantic versioning and publishes to [FlakeHub](https://flakeh
 
 ## 🆘 Getting Help
 
-- **📋 Issues**: [GitHub Issues](https://github.com/OWNER/grafana-nix/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/OWNER/grafana-nix/discussions)
+- **📋 Issues**: [GitHub Issues](https://github.com/wscoble/grafana-nix/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/wscoble/grafana-nix/discussions)
 - **📖 Documentation**: [docs/](./docs/)
 - **🐦 Twitter**: Follow [@DeterminateSys](https://twitter.com/DeterminateSys) for Nix updates
 
@@ -253,6 +262,6 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for deta
 
 **Made with ❤️ and Nix**
 
-[⭐ Star this project](https://github.com/OWNER/grafana-nix) if it helped you!
+[⭐ Star this project](https://github.com/wscoble/grafana-nix) if it helped you!
 
 </div>

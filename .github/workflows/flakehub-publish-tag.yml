@@ -50,14 +50,14 @@ jobs:
 
             **Using Nix Flakes:**
             ```bash
-            nix run "https://flakehub.com/f/OWNER/grafana-nix/${{ github.ref_name }}.tar.gz"
+            nix run "https://flakehub.com/f/wscoble/grafana-nix/${{ github.ref_name }}.tar.gz"
             ```
 
             **Adding to your flake.nix:**
             ```nix
             {
               inputs = {
-                grafana-nix.url = "https://flakehub.com/f/OWNER/grafana-nix/${{ github.ref_name }}.tar.gz";
+                grafana-nix.url = "https://flakehub.com/f/wscoble/grafana-nix/${{ github.ref_name }}.tar.gz";
               };
             }
             ```
@@ -66,7 +66,7 @@ jobs:
 
             Try the Grafana stack locally:
             ```bash
-            nix develop "https://flakehub.com/f/OWNER/grafana-nix/${{ github.ref_name }}.tar.gz"
+            nix develop "https://flakehub.com/f/wscoble/grafana-nix/${{ github.ref_name }}.tar.gz"
             ```
 
             Full documentation is available in the repository README.

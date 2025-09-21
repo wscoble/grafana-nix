@@ -47,7 +47,7 @@ nix --version
 Now for the magic! Run this single command:
 
 ```bash
-nix run "https://flakehub.com/f/OWNER/grafana-nix"
+nix run "https://flakehub.com/f/wscoble/grafana-nix"
 ```
 
 ### What's happening?
@@ -91,7 +91,7 @@ Once the command finishes, open your browser:
 Want to customize or develop? Enter a development shell:
 
 ```bash
-nix develop "https://flakehub.com/f/OWNER/grafana-nix"
+nix develop "https://flakehub.com/f/wscoble/grafana-nix"
 ```
 
 This gives you:
@@ -164,4 +164,4 @@ This removes everything cleanly, leaving your system exactly as it was before.
 
 ---
 
-**Need help?** [Open an issue](https://github.com/OWNER/grafana-nix/issues) or check our [FAQ](../faq.md).
+**Need help?** [Open an issue](https://github.com/wscoble/grafana-nix/issues) or check our [FAQ](../faq.md).

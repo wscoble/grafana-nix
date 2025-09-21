@@ -13,7 +13,7 @@ By the end of this guide, you'll have:
 
 1. **Start the stack** (if not already running):
    ```bash
-   nix run "https://flakehub.com/f/OWNER/grafana-nix"
+   nix run "https://flakehub.com/f/wscoble/grafana-nix"
    ```
 
 2. **Open Grafana**: http://localhost:3000
@@ -51,7 +51,7 @@ Let's create a dashboard using Nix configuration:
 
 1. **Create** a local copy of the flake:
    ```bash
-   git clone https://github.com/OWNER/grafana-nix
+   git clone https://github.com/wscoble/grafana-nix
    cd grafana-nix
    ```
 
@@ -266,4 +266,4 @@ This is infrastructure as code taken to its logical conclusion!
 
 ---
 
-**Need help?** [Join our discussions](https://github.com/OWNER/grafana-nix/discussions) or [open an issue](https://github.com/OWNER/grafana-nix/issues).
+**Need help?** [Join our discussions](https://github.com/wscoble/grafana-nix/discussions) or [open an issue](https://github.com/wscoble/grafana-nix/issues).

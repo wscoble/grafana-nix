@@ -86,8 +86,19 @@ let
     retention = envConfig.prometheus.retention;
     scrapeConfigs = [
       {
+        job_name = "prometheus";
+        static_configs = [{ targets = [ "localhost:${toString envConfig.prometheus.port}" ]; }];
+        metrics_path = "/metrics";
+      }
+      {
         job_name = "grafana";
         static_configs = [{ targets = [ "localhost:${toString envConfig.grafana.port}" ]; }];
+        metrics_path = "/metrics";
+      }
+      {
+        job_name = "alloy";
+        static_configs = [{ targets = [ "localhost:${toString envConfig.alloy.port}" ]; }];
+        metrics_path = "/metrics";
       }
     ];
   };
@@ -169,17 +180,43 @@ let
     # Create data directories
     mkdir -p "$DATA_DIR"/{grafana,prometheus,loki,tempo,alloy}
 
-    # Function to check if port is available
+    # Function to check if port is available (cross-platform)
     check_port() {
       local port=$1
       local service=$2
-      if command -v netstat >/dev/null 2>&1; then
-        if netstat -tuln 2>/dev/null | grep -q ":$port "; then
-          echo "❌ Port $port is already in use (needed for $service)"
-          echo "💡 Try: killall $service || pkill -f $service"
-          echo "💡 Or set environment variable: ''${service^^}_PORT=\$((port + 1000))"
-          return 1
+      local port_in_use=false
+
+      # Try different port checking methods in order of preference
+      if command -v ss >/dev/null 2>&1; then
+        # Modern Linux systems use ss
+        if ss -tuln 2>/dev/null | grep -q ":$port "; then
+          port_in_use=true
         fi
+      elif command -v netstat >/dev/null 2>&1; then
+        # Fallback to netstat (macOS, older Linux)
+        if netstat -tuln 2>/dev/null | grep -q ":$port "; then
+          port_in_use=true
+        fi
+      elif command -v lsof >/dev/null 2>&1; then
+        # Alternative fallback using lsof
+        if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
+          port_in_use=true
+        fi
+      else
+        # Last resort: try to bind to the port
+        if ! timeout 1 bash -c "</dev/tcp/localhost/$port" 2>/dev/null; then
+          # Port appears to be free (connection failed)
+          return 0
+        else
+          port_in_use=true
+        fi
+      fi
+
+      if [ "$port_in_use" = true ]; then
+        echo "❌ Port $port is already in use (needed for $service)"
+        echo "💡 Try: killall $service || pkill -f $service"
+        echo "💡 Or set environment variable: ''${service^^}_PORT=\$((port + 1000))"
+        return 1
       fi
       return 0
     }
@@ -187,6 +224,8 @@ let
     echo "🚀 Starting Grafana Stack..."
     echo "📁 Data directory: $DATA_DIR"
     echo "⚙️  Runtime config: $RUNTIME_DIR"
+    echo ""
+    echo "💡 To clean up data later: rm -rf \"$DATA_DIR\""
 
     # Use environment variables for ports (Flox-compatible)
     PROMETHEUS_PORT=''${PROMETHEUS_PORT:-${toString prometheusConfig.port}}
@@ -276,7 +315,7 @@ let
     {
       meta = {
         description = "Complete Grafana observability stack";
-        homepage = "https://github.com/OWNER/grafana-nix";
+        homepage = "https://github.com/wscoble/grafana-nix";
       };
     } ''
     mkdir -p $out/bin
