@@ -87,7 +87,7 @@ Everything is configurable through Nix expressions:
 
 ```nix
 {
-  inputs.grafana-nix.url = "github:OWNER/grafana-nix";
+  inputs.grafana-nix.url = "github:wscoble/grafana-nix";
 
   outputs = { grafana-nix, ... }: {
     myStack = grafana-nix.lib.buildStack {

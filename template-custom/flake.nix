@@ -2,7 +2,7 @@
   description = "Customizable Grafana stack from template";
 
   inputs = {
-    grafana-nix.url = "github:OWNER/grafana-nix";
+    grafana-nix.url = "github:wscoble/grafana-nix";
     nixpkgs.follows = "grafana-nix/nixpkgs";
   };
 
