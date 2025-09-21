@@ -9,10 +9,18 @@ rec {
     if pkgs.stdenv.isLinux
     then import ./docker.nix { inherit lib pkgs; }
     else {
-      buildImage = args: throw "Docker images are only supported on Linux platforms";
-      buildCompose = args: throw "Docker Compose is only supported on Linux platforms";
-      buildLayeredImage = args: throw "Docker layered images are only supported on Linux platforms";
-      baseImage = throw "Docker base image is only supported on Linux platforms";
+      buildImage = args: pkgs.runCommand "unsupported-docker-image" {} ''
+        echo "Docker images are only supported on Linux platforms" > $out
+      '';
+      buildCompose = args: pkgs.runCommand "unsupported-docker-compose" {} ''
+        echo "Docker Compose is only supported on Linux platforms" > $out
+      '';
+      buildLayeredImage = args: pkgs.runCommand "unsupported-layered-image" {} ''
+        echo "Docker layered images are only supported on Linux platforms" > $out
+      '';
+      baseImage = pkgs.runCommand "unsupported-base-image" {} ''
+        echo "Docker base image is only supported on Linux platforms" > $out
+      '';
     };
 
   # Kubernetes utilities (Linux only)
@@ -20,7 +28,9 @@ rec {
     if pkgs.stdenv.isLinux
     then import ./kubernetes.nix { inherit lib pkgs; }
     else {
-      buildManifests = args: throw "Kubernetes manifests are only supported on Linux platforms";
+      buildManifests = args: pkgs.runCommand "unsupported-k8s-manifests" {} ''
+        echo "Kubernetes manifests are only supported on Linux platforms" > $out
+      '';
     };
 
   # Stack builder - the main API

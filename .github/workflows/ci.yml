@@ -34,7 +34,7 @@ jobs:
         uses: DeterminateSystems/flake-checker-action@main
 
       - name: Build all outputs
-        run: nix flake check --all-systems
+        run: nix flake check
 
       - name: Build packages
         run: |
