@@ -3,8 +3,8 @@
 This automated update includes the following changes:
 
 ### Changed inputs:
-❌ Old:         "rev": "8eaee110344796db060382e15d3af0a9fc396e0e",
-✅ New:         "rev": "7df7ff7d8e00218376575f0acdcc5d66741351ee",
+❌ Old:         "rev": "7df7ff7d8e00218376575f0acdcc5d66741351ee",
+✅ New:         "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
 
 ### Testing
 - [x] Flake check passed
