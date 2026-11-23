@@ -3,8 +3,12 @@
 This automated update includes the following changes:
 
 ### Changed inputs:
-❌ Old:         "rev": "8eaee110344796db060382e15d3af0a9fc396e0e",
-✅ New:         "rev": "7df7ff7d8e00218376575f0acdcc5d66741351ee",
+❌ Old:         "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+✅ New:         "rev": "cd489559845d81f673a12885576016c65cbe9363",
+❌ Old:         "rev": "7df7ff7d8e00218376575f0acdcc5d66741351ee",
+✅ New:         "rev": "2786a2a72088ecf32aea5b3ec52099e6a7cff78f",
+❌ Old:         "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+✅ New:         "rev": "d36eeed142f88b5a636f2e3856a53c61654cf29b",
 
 ### Testing
 - [x] Flake check passed
